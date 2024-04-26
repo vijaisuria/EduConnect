@@ -21,7 +21,7 @@
         </div>
         
         <input type="checkbox" id="linkedinSkills" name="linkedinSkills" onchange="toggleLinkedinInput()">
-        <label for="linkedinSkills">Import skills from LinkedIn (Enter LinkedIn username below)</label><br>
+        <label for="linkedinSkills">Import skills from LinkedIn</label><br>
         <div id="linkedinInput" style="display:none;">
             <label for="linkedinUsername">LinkedIn Username:</label>
             <input type="text" id="linkedinUsername" name="linkedinUsername">
@@ -31,7 +31,7 @@
     </form>
 
     {% if profile_data %}
-        <h2>Data:</h2>
+        <!-- <h2>Data:</h2>
         <ul>
             {% if profile_data.skills %}
                 <h3>LinkedIn Skills:</h3>
@@ -44,6 +44,12 @@
                     <li>{{ skill }}</li>
                 {% endfor %}
             {% endif %}
+        </ul> -->
+        <ul>
+            {% if gemini_response %}
+            <h2>Skill Gap Analysis</h2>
+            <p>{{ gemini_response }}</p>
+          {% endif %}
         </ul>
     {% endif %}
 
