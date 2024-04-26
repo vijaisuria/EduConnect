@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Sync</title>
+</head>
+<body>
+    <h1>Skill Sync</h1>
+    <form action="/" method="post">
+        <label for="careerGoal">Career Goal:</label><br>
+        <input type="text" id="careerGoal" name="careerGoal"><br><br>
+        
+        <input type="checkbox" id="manualSkills" name="manualSkills" onchange="toggleSkillsInput()">
+        <label for="manualSkills">Manually add skills</label><br>
+        <div id="manualSkillsInput" style="display:none;">
+            <label for="skill">Skill:</label>
+            <input type="text" id="skill" name="skill[]">
+            <button type="button" onclick="addSkill()">Add Skill</button><br>
+            <ul id="skillList"></ul>
+        </div>
+        
+        <input type="checkbox" id="linkedinSkills" name="linkedinSkills" onchange="toggleLinkedinInput()">
+        <label for="linkedinSkills">Import skills from LinkedIn (Enter LinkedIn username below)</label><br>
+        <div id="linkedinInput" style="display:none;">
+            <label for="linkedinUsername">LinkedIn Username:</label>
+            <input type="text" id="linkedinUsername" name="linkedinUsername">
+        </div>
+        
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if profile_data %}
+        <h2>Data:</h2>
+        <ul>
+            {% if profile_data.skills %}
+                <h3>LinkedIn Skills:</h3>
+                {% for skill in profile_data.skills %}
+                    <li>{{ skill }}</li>
+                {% endfor %}
+            {% else %}
+                <h3>Manually Entered Skills:</h3>
+                {% for skill in manual_skills %}
+                    <li>{{ skill }}</li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    {% endif %}
+
+    <script>
+        function toggleSkillsInput() {
+            var manualSkillsInput = document.getElementById("manualSkillsInput");
+            if (document.getElementById("manualSkills").checked) {
+                manualSkillsInput.style.display = "block";
+            } else {
+                manualSkillsInput.style.display = "none";
+            }
+        }
+    
+        function toggleLinkedinInput() {
+            var linkedinInput = document.getElementById("linkedinInput");
+            if (document.getElementById("linkedinSkills").checked) {
+                linkedinInput.style.display = "block";
+            } else {
+                linkedinInput.style.display = "none";
+            }
+        }
+    
+        function addSkill() {
+            var skillInput = document.createElement("input");
+            skillInput.setAttribute("type", "text");
+            skillInput.setAttribute("name", "skill[]");
+            var skillList = document.getElementById("skillList");
+            var skill = document.getElementById("skill").value.trim();
+            if (skill !== "") {
+                var listItem = document.createElement("li");
+                listItem.textContent = skill;
+                skillList.appendChild(listItem);
+                skillInput.value = skill;
+                skillList.appendChild(skillInput);
+                document.getElementById("skill").value = "";
+            }
+        }
+    </script>
+    
+</body>
+</html>
