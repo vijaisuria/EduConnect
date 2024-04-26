@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, session, redirect, url_for
+from flask import Flask, request, jsonify, render_template, session, send_from_directory
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, decode_token
 import sqlite3
 from extensions import mail
@@ -41,7 +41,7 @@ def index():
             decoded_token = decode_token(token)
             uid = decoded_token.get('sub')
             return render_template('chat.html', token=uid)
-        except jwt.ExpiredSignatureError:
+        except:
             return render_template('auth.html')
     return render_template('auth.html')
 
@@ -55,13 +55,19 @@ app.register_blueprint(course_routes, url_prefix='/course')
 
 @app.route('/chat')
 def chat():
-    token = request.args.get('token')
-    if not token:
-        return jsonify({'message': 'Token is missing.'}), 400
-    
-    decoded_token = decode_token(token)
-    id = decoded_token['sub']
-    return render_template('chat.html', token=id)
+    token = session.get('token')
+    if token:
+        try:
+            decoded_token = decode_token(token)
+            uid = decoded_token.get('sub')
+            return render_template('peers.html', token=uid)
+        except:
+            return render_template('auth.html')
+    return render_template('auth.html')
+
+@app.route('/logo.png')
+def logo():
+    return send_from_directory(app.static_folder, 'logo.png')
 
 @app.route('/users', methods=['GET'])
 def get_users():
