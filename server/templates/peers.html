@@ -33,6 +33,45 @@
         </div>
     </div>
 
+    <!-- Modal for meeting code input -->
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enter Meeting Code</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="meetingForm">
+                        <div class="form-group">
+                            <p>Hey! Welcome EduBot portal!</p>
+                            <p>Goto to <a href="/">Virtual Portal</a> to get your meeting code. <br>
+                                If you have already got the code, please enter the meeting code to join the meeting.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="receiverEmail">Receiver Email</label>
+                            <input type="email" class="form-control" id="receiverEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="meetingCode">Meeting Code:</label>
+                            <input type="text" class="form-control" id="meetingCode" required>
+                        </div>
+                        <div class="form-group my-4">
+                            <label for="disclaimer">Disclaimer:</label>
+                            <p>By clicking send, you agree to follow the rules and regulations of the meeting platform.
+                            </p>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="submitBtn" class="btn btn-primary">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- Bootstrap JS and dependencies -->
@@ -50,7 +89,7 @@
             // Fetch data from the API
             if (cid) {
                 $.ajax({
-                    url: 'http://localhost:5000/course/get-users-by-course-id?cid=' + cid,
+                    url: 'http://localhost:5000/enrollment/get-users-by-course-id?cid=' + cid,
                     type: 'GET',
                     dataType: 'json',
                     success: function (response) {
@@ -64,7 +103,7 @@
                                     '<td>' + user.email + '</td>' +
                                     '<td>' +
                                     '<button type="button" class="btn btn-primary btn-sm">Message</button>' +
-                                    '<button type="button" class="btn btn-success btn-sm mx-4">Meet Now</button>' +
+                                    '<button type="button" class="btn btn-success btn-sm mx-4" data-bs-toggle="modal" data-bs-target="#exampleModal">Meet Now</button>' +
                                     '</td>' +
                                     '</tr>';
                                 $('#userTable tbody').append(newRow);
@@ -85,7 +124,40 @@
                 $('#userTable tbody').append('<tr><td colspan="4">No users found</td></tr>');
                 console.error('cid parameter is missing');
             }
+
+            $('#submitBtn').click(function () {
+                var meetingCode = $('#meetingCode').val();
+                var receiverEmail = $('#receiverEmail').val();
+                console.log('Meeting code:', meetingCode);
+                console.log('Receiver email:', receiverEmail);
+                console.log('Course ID:', cid);
+                $.ajax({
+                    url: 'http://localhost:5000/enrollment/sendmail?cid=' + cid,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        meeting_code: meetingCode,
+                        receiver_email: receiverEmail
+                    }),
+                    success: function (response) {
+                        console.log('Mail sent successfully:', response);
+                        // You can add any success handling here, such as showing a success message
+                        // Close the modal
+                        $('#meetingModal').modal('hide');
+                        // Clear the input fields
+                        $('#meetingCode').val('');
+                        $('#receiverEmail').val('');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error sending mail:', error);
+                        // You can add any error handling here, such as showing an error message
+                    }
+                });
+            });
+
         });
+
+
     </script>
 
 </body>
