@@ -35,15 +35,7 @@ from routes.course_routes import course_routes
 
 @app.route('/', methods=['GET'])
 def index():
-    token = session.get('token')
-    if token:
-        try:
-            decoded_token = decode_token(token)
-            uid = decoded_token.get('sub')
-            return render_template('chat.html', token=uid)
-        except:
-            return render_template('auth.html')
-    return render_template('auth.html')
+    return render_template('educonnect/index.html')
 
 @app.route('/account', methods=['GET'])
 def auth():
@@ -56,35 +48,14 @@ app.register_blueprint(course_routes, url_prefix='/course')
 @app.route('/chat')
 def chat():
     token = session.get('token')
-    if token:
-        try:
-            decoded_token = decode_token(token)
-            uid = decoded_token.get('sub')
-            return render_template('peers.html', token=uid)
-        except:
-            return render_template('auth.html')
-    return render_template('auth.html')
 
-@app.route('/logo.png')
-def logo():
-    return send_from_directory(app.static_folder, 'logo.png')
+    decoded_token = decode_token(token)
+    uid = decoded_token.get('sub')
+    return render_template('peers.html', token=uid)
 
-@app.route('/users', methods=['GET'])
-def get_users():
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users')
-    users = cursor.fetchall()
-
-    users_data = []
-    for user in users:
-        user_data = {
-            'id': user[0],
-            'username': user[1],
-            'email': user[2],
-            'verified': user[4]
-        }
-        users_data.append(user_data)
-    return jsonify(users_data), 200
+@app.route('/profile')
+def profile():
+    return render_template('educonnect/user_profile.html', token=2)
 
 if __name__ == '__main__':
     app.run(debug=True)
