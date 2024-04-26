@@ -51,3 +51,35 @@ def get_module_details():
         return jsonify(module_details)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+# Route to get course details by course id (cid)
+@learn_route.route('/course/<int:cid>', methods=['GET'])
+def get_course_by_id(cid):
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Course WHERE id = ?', (cid,))
+        course = cursor.fetchone()
+        conn.close()
+        if course:
+            return jsonify(dict(course))
+        else:
+            return jsonify({'error': 'Course not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Route to get module details by module id (mid)
+@learn_route.route('/module/<int:mid>', methods=['GET'])
+def get_module_by_id(mid):
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Module WHERE id = ?', (mid,))
+        module = cursor.fetchone()
+        conn.close()
+        if module:
+            return jsonify(dict(module))
+        else:
+            return jsonify({'error': 'Module not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
