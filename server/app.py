@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify, render_template, session, send_from_directory
+from flask import Flask, request, jsonify, render_template, session, url_for
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, decode_token
 import sqlite3
 from extensions import mail
 from flask_cors import CORS
+import json
 
 from dotenv import load_dotenv
 import os
@@ -32,6 +33,7 @@ conn.commit()
 
 from routes.auth_routes import auth_routes
 from routes.course_routes import course_routes
+from routes.educonnect import educonnect_bp 
 
 @app.route('/', methods=['GET'])
 def index():
@@ -43,7 +45,7 @@ def auth():
 
 app.register_blueprint(auth_routes, url_prefix='/auth')
 app.register_blueprint(course_routes, url_prefix='/course')
-
+app.register_blueprint(educonnect_bp, url_prefix='/educonnect')
 
 @app.route('/chat')
 def chat():
@@ -53,9 +55,11 @@ def chat():
     uid = decoded_token.get('sub')
     return render_template('peers.html', token=uid)
 
-@app.route('/profile')
-def profile():
-    return render_template('educonnect/user_profile.html', token=2)
+@app.route('/get_exams')
+def get_exams():
+   with open('static/data/exams.json', 'r') as file:
+        data = json.load(file)
+        return data
 
 if __name__ == '__main__':
     app.run(debug=True)
