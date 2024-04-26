@@ -23,6 +23,7 @@
             "course_dur" : 25,
             "stud_en" : 1500,
             "url": "https://eps.leeds.ac.uk/images/resized/600x300-0-0-1-80-Molecular_and_Nanoscale_research_university_of_leeds_school_of_physics_and_astronomy_800x400.jpg",
+            "teach" :"https://leadschool.in/wp-content/uploads/2022/04/Blog%20Featured%20Images%20(30).png",
             "topics": [
                 {
                     "topic_name": "Mechanics",
@@ -34,7 +35,7 @@
                 },
                 {
                     "topic_name": "Electromagnetism",
-                    "description": "Electromagnetism is a branch of physics that deals with the interaction between electrically charged particles and their electromagnetic fields."
+                    "description": "Electromagnetism is a branch of physics that deals with the interaction between electrically charged particles and their electromagnetic fields in the universe that involves interaction"
                 },
                 {
                     "topic_name": "Optics",
@@ -42,7 +43,7 @@
                 },
                 {
                     "topic_name": "Modern Physics",
-                    "description": "Modern physics is the branch of physics that deals with the behavior of matter and energy on the atomic and subatomic scales."
+                    "description": "Modern physics is the branch of physics that deals with the behavior of matter and energy on the atomic and subatomic scales to keep track of atomic sizes and shapes."
                 }
             ]
         },
@@ -52,6 +53,7 @@
             "course_dur" : 35,
             "stud_en" : 1800,
             "url": "https://i.pinimg.com/1200x/92/13/12/921312a0a759d2380782b846c9d6747c.jpg",
+            "teach": "https://environment.leeds.ac.uk/images/resized/600x300-0-0-1-80-1_19.jpg",
             "topics": [
                 {
                     "topic_name": "Physical Chemistry",
@@ -72,6 +74,7 @@
             "course_ins" : "Kishore Ji",
             "course_dur" : 50,
             "stud_en" : 8000,
+            "teach" :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRW_aksqgQhlC7Pw7P59XVwlzKIgH44Z3uGvLeqgtbkiw&s",
             "url": "https://djgeqya1wekbj.cloudfront.net/product-images/600-600/Biology-1200x600.jpg.webp",
             "topics": [
                 {
@@ -100,6 +103,7 @@
             "course_name": "Mathematics",
             "course_dur" : 60,
             "stud_en" : 5000,
+            "teach": "https://djgeqya1wekbj.cloudfront.net/product-images/600-600/Mathematics-A-Level-1200x600-1.jpg.webp",
             "url": "https://st3.depositphotos.com/18803028/35022/i/450/depositphotos_350224832-stock-photo-mathematics-background-formulas-seamless-illustration.jpg",
             "course_ins" : "Kamal Kiran",
             "topics": [
@@ -124,6 +128,7 @@
         {
             "course_name": "General Studies",
             "url": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjHyRuSfXBQhzSQrG4sSBfUZhRCdajsRdTnCc3lXBRM2FqtDIhTJf5ThtdAZ3zIlGvdDGBkC3dg-mDF7xTWxfzQDjaKbJMU8o5WTmlpIyf_YeNaLelXGDIuYBkpG76YuByEE4yA97tguOw9aaYH8vwIyvbo3ZrD4PdpJTayvFVjrEaDlw0wCrcsbeoX4Q/w600-h300-p-k-no-nu/GS-1_WritiyIAS.jpg",
+            "teach": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQqkjHChEvxDkG2vxgoaWHw0Qhwv7KRFTxbtz5B_9N7w&s",
             "course_ins" : "Bala Raj",
             "course_dur" : 140,
             "stud_en" : 3000,
@@ -153,6 +158,7 @@
         {
             "course_name": "Aptitude Test",
             "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbeYGJR0nJXmcBQn8l2kgPupG3vHuAWsK2Z1A_TiamPg&s",
+            "teach": "https://miro.medium.com/v2/resize:fit:600/1*ra8XL5YFQn1wf4PS8bNvuA.png",
             "course_ins" : "Ramanujan",
             "course_dur" : 90,
             "stud_en" : 6000,
@@ -173,6 +179,7 @@
             "course_dur" : 150,
             "stud_en" : 4000,
             "url": "https://www.upscprep.com/content/images/size/w600/2022/06/optional.jpg",
+            "teach": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0aP6xZFNSk2gif1S5glXNIDOUDtBpKwgM_L4_zkZVDw&s",
             "course_ins" : "Vishwa",
             "topics": [
                 {
