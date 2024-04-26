@@ -1,7 +1,34 @@
 from flask import Flask, request, render_template
 from linkedin_api import Linkedin
+import google.generativeai as genai
+import os
 
 app = Flask(__name__)
+
+def get_gemini_response(career_goal, skills):
+    """Fetches response from Gemini API based on career goal and skills.
+
+    Args:
+        career_goal (str): The user's career goal.
+        skills (list): A list of the user's skills.
+
+    Returns:
+        str: The Gemini API response indicating skill gaps.
+    """
+
+    # Combine career goal and skills into a query for Gemini
+    query = f"Considering my career goal of '{career_goal}', what additional skills would I need to acquire if my current skills are {', '.join(skills)}? Just list them as a list. The skills should be actual programming or technical skills. Just give them concise, don't give extra words like Version control (eg. Git). List a maximum of 5 skills only."
+
+    model = genai.GenerativeModel('gemini-pro')
+    api_key = os.getenv("GOOGLE_API_KEY")  # Retrieve API key from environment variable
+    genai.configure(api_key=api_key)
+
+    try:
+        response = model.generate_content(query)
+        return response.text
+    except Exception as e:
+        print(f"Error occurred during Gemini API call: {e}")
+        return "An error occurred while fetching data from Gemini. Please try again later."
 
 def get_linkedin_profile(username):
     api = Linkedin('sriradha81@gmail.com', '***')
@@ -21,6 +48,13 @@ def index():
         elif manual_skills:
             profile_data = manual_skills
 
+        if profile_data:
+            # Call Gemini API to identify skill gaps
+            gemini_response = get_gemini_response(career_goal, profile_data)
+            return render_template('index.html', profile_data=profile_data, gemini_response=gemini_response)
+        else:
+            return render_template('index.html', error="Please enter your career goal and skills.")
+        
         return render_template('index.html', profile_data=profile_data, manual_skills=manual_skills)
 
     return render_template('index.html')
