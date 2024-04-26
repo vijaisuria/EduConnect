@@ -1,0 +1,18 @@
+POST http://localhost:5000/auth/resend-mail HTTP/1.1
+content-type: application/json
+
+
+{
+    "email": "vijaisuria04@gmail.com"
+}
+
+###
+
+POST http://localhost:5000/auth/register HTTP/1.1
+content-type: application/json
+
+
+{
+    "email": "vijaisuria87@gmail.com",
+    "password": "123456",
+}

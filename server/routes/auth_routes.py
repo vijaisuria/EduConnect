@@ -1,4 +1,4 @@
-from flask import request, jsonify, Blueprint, redirect, url_for, flash
+from flask import request, jsonify, Blueprint, redirect, url_for, flash, render_template
 from flask_mail import Mail, Message
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 import sqlite3
@@ -12,7 +12,7 @@ load_dotenv()
 
 # Database setup
 conn = sqlite3.connect('database.db', check_same_thread=False)
-conn.execute('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT, verified INTEGER, UNIQUE(email, username))')
+conn.execute('CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, verified BOOLEAN DEFAULT 0)')
 conn.commit()
 
 auth_routes = Blueprint('auth_routes', __name__)
@@ -29,7 +29,7 @@ def register():
     password = data['password']
     
     # Check if the email or username already exists
-    cursor = conn.execute('SELECT uid FROM users WHERE email = ?', (email))
+    cursor = conn.execute('SELECT id FROM users WHERE email = ?', (email,))
     existing_user = cursor.fetchone()
     if existing_user:
         flash('Email or username already registered', 'error')
@@ -40,14 +40,14 @@ def register():
     
     try:
         # Save user data to the database
-        conn.execute('INSERT INTO users (email, password) VALUES (?, ?, ?, ?)', (email, hashed_password))
+        conn.execute('INSERT INTO users (email, password) VALUES (?, ?)', (email, hashed_password))
         conn.commit()
         
         # Send verification email
         token = create_access_token(identity=email)
         verification_link = f'http://localhost:5000/auth/verify?token={token}'
         msg = Message('Verify your account', sender=os.getenv('MAIL_USERNAME'), recipients=[email])
-        msg.body = f'Click the following link to verify your account: {verification_link}'
+        msg.html = render_template('verify.html', email=email, verification_link=verification_link)
         mail.send(msg)
         
         flash('User registered successfully. Verification email sent.', 'success')
@@ -59,24 +59,19 @@ def register():
 @auth_routes.route('/resend-mail', methods=['POST'])
 def resend_mail():
     data = request.json
-    username_or_email = data.get('username_or_email')
+    email = data.get('email')
 
-    # Check if the provided username or email exists in the database
-    if '@' in username_or_email:
-        query = 'SELECT email FROM users WHERE email = ?'
-    else:
-        query = 'SELECT email FROM users WHERE username = ?'
+    query = 'SELECT email FROM users WHERE email = ?'
     
-    cursor = conn.execute(query, (username_or_email,))
+    cursor = conn.execute(query, (email,))
     user_data = cursor.fetchone()
     if user_data:
         email = user_data[0]
         try:
-            # Send verification email
             token = create_access_token(identity=email)
             verification_link = f'http://localhost:5000/verify?token={token}'
             msg = Message('Verify your account', sender=os.getenv('MAIL_USERNAME'), recipients=[email])
-            msg.body = f'Click the following link to verify your account: {verification_link}'
+            msg.html = render_template('verify.html', email=email, verification_link=verification_link)  # Pass user information and verification link to the template
             mail.send(msg)
             
             return jsonify({'message': 'Verification email resent successfully.'}), 200

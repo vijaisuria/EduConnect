@@ -27,7 +27,7 @@ jwt = JWTManager(app)
 
 # Database setup
 conn = sqlite3.connect('database.db', check_same_thread=False)
-conn.execute('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT, verified INTEGER, UNIQUE(email, username))')
+conn.execute('CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, verified BOOLEAN DEFAULT 0)')
 conn.commit()
 
 from routes.auth_routes import auth_routes
@@ -65,6 +65,23 @@ def get_user(user_id):
         'verified': user[4]
     }
     return jsonify(user_data), 200
+
+@app.route('/users', methods=['GET'])
+def get_users():
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users')
+    users = cursor.fetchall()
+
+    users_data = []
+    for user in users:
+        user_data = {
+            'id': user[0],
+            'username': user[1],
+            'email': user[2],
+            'verified': user[4]
+        }
+        users_data.append(user_data)
+    return jsonify(users_data), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
