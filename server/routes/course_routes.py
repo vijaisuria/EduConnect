@@ -1,6 +1,9 @@
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, render_template
 import sqlite3
 from flask_jwt_extended import decode_token
+from flask_mail import Mail, Message
+from extensions import mail
+import os
 
 course_routes = Blueprint('course_routes', __name__)
 
@@ -103,3 +106,75 @@ def get_users_by_course_id_route():
    
     users_list = [{'id': user[0], 'email': user[1]} for user in users]
     return jsonify({'users': users_list}), 200
+
+
+
+# Function to retrieve course details by course ID
+def get_course_details(course_id):
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
+    try:
+        c.execute("SELECT name, description FROM Course WHERE id = ?", (course_id,))
+        course_details = c.fetchone()
+        return course_details
+    except sqlite3.Error as e:
+        print("Error retrieving course details:", e)
+        return None
+    finally:
+        conn.close()
+
+# Function to retrieve user details by user ID
+def get_user_details(user_id):
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
+    try:
+        c.execute("SELECT name, CASE WHEN status = 0 THEN email ELSE 'Hidden' END AS email FROM Users WHERE id = ?", (user_id,))
+        user_details = c.fetchone()
+        return user_details
+    except sqlite3.Error as e:
+        print("Error retrieving user details:", e)
+        return None
+    finally:
+        conn.close()
+
+@course_routes.route('/sendmail', methods=['POST'])
+def send_mail_route():
+    course_id = request.args.get('cid')
+    if not course_id:
+        return jsonify({'error': 'Course ID is required'}), 400
+
+    token = session.get('token')
+    if not token:
+        return jsonify({'error': 'Token is missing'}), 400
+
+    user_id = decode_token(token)['sub']
+    # user_id = request.args.get('uid')
+
+    if not user_id:
+        return jsonify({'error': 'User ID not found in token'}), 400
+
+    user_details = get_user_details(user_id)
+    if not user_details:
+        return jsonify({'error': 'Failed to retrieve user details'}), 500
+
+    course_details = get_course_details(course_id)
+    if not course_details:
+        return jsonify({'error': 'Failed to retrieve course details'}), 500
+
+    meeting_code = request.json.get('meeting_code')
+    reciever_email = request.json.get('receiver_email')
+
+    print(user_id, course_id, request.json, reciever_email)
+
+
+    email_content = render_template('peer_confirm.html', sender_name=user_details[0], course_name=course_details[0], course_description=course_details[1], meeting_code=meeting_code)
+
+
+    # Send email
+    msg = Message("Meeting Details", sender=os.getenv('MAIL_USERNAME'), recipients=[reciever_email])
+    msg.html = email_content
+    mail.send(msg)
+
+    return jsonify({'message': 'Email sent successfully'}), 200
