@@ -5,7 +5,7 @@ from flask_mail import Mail, Message
 from extensions import mail
 import os
 
-course_routes = Blueprint('course_routes', __name__)
+enrollment_routes = Blueprint('enrollment_routes', __name__)
 
 # Dummy function to enroll in a course
 def enroll_course(user_id, course_id):
@@ -27,7 +27,6 @@ def enroll_course(user_id, course_id):
         return False  # Failed to enroll
     finally:
         conn.close()
-
 
 # Dummy function to delete enrollment for a course
 def delete_enrollment(user_id, course_id):
@@ -59,7 +58,7 @@ def get_users_by_course_id(course_id):
     finally:
         conn.close()
 
-@course_routes.route('/enroll-course', methods=['GET'])
+@enrollment_routes.route('/enroll-course', methods=['GET'])
 def enroll_course_route():
     token = session.get('token')
     if not token:
@@ -78,7 +77,7 @@ def enroll_course_route():
         return jsonify({'error': 'Failed to enroll'}), 500
 
 
-@course_routes.route('/delete-enrollment', methods=['DELETE'])
+@enrollment_routes.route('/delete-enrollment', methods=['DELETE'])
 def delete_enrollment_route():
     token = request.args.get('token')
     if not token:
@@ -96,7 +95,7 @@ def delete_enrollment_route():
     else:
         return jsonify({'error': 'Failed to delete enrollment'}), 500
 
-@course_routes.route('/get-users-by-course-id', methods=['GET'])
+@enrollment_routes.route('/get-users-by-course-id', methods=['GET'])
 def get_users_by_course_id_route():
     course_id = request.args.get('cid')
     if not course_id:
@@ -106,8 +105,6 @@ def get_users_by_course_id_route():
    
     users_list = [{'id': user[0], 'email': user[1]} for user in users]
     return jsonify({'users': users_list}), 200
-
-
 
 # Function to retrieve course details by course ID
 def get_course_details(course_id):
@@ -139,7 +136,7 @@ def get_user_details(user_id):
     finally:
         conn.close()
 
-@course_routes.route('/sendmail', methods=['POST'])
+@enrollment_routes.route('/sendmail', methods=['POST'])
 def send_mail_route():
     course_id = request.args.get('cid')
     if not course_id:

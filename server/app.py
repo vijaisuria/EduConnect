@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, session, url_for
+from flask import Flask, request, jsonify, render_template, session, url_for, redirect
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, decode_token
 import sqlite3
 from extensions import mail
@@ -32,20 +32,22 @@ conn.execute('CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY AUTOINCRE
 conn.commit()
 
 from routes.auth_routes import auth_routes
-from routes.course_routes import course_routes
+from routes.enrollment_routes import enrollment_routes
 from routes.educonnect import educonnect_bp 
+from routes.learn_route import learn_route
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('educonnect/index.html')
+    return redirect(url_for('educonnect.index'))
 
 @app.route('/account', methods=['GET'])
 def auth():
     return render_template('auth.html')
 
 app.register_blueprint(auth_routes, url_prefix='/auth')
-app.register_blueprint(course_routes, url_prefix='/course')
+app.register_blueprint(enrollment_routes, url_prefix='/enrollment')
 app.register_blueprint(educonnect_bp, url_prefix='/educonnect')
+app.register_blueprint(learn_route, url_prefix='/learn')
 
 @app.route('/chat')
 def chat():
