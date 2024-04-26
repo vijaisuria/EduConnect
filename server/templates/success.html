@@ -168,7 +168,38 @@
 		</div>
 	</div>
 	<h1>Success</h1>
-		<p>Your Accout has been verified Successfully;<br /> we'll be in touch shortly!</p>
+	<p>Your Accout has been verified Successfully;<br /></p>
+	<p>Through our platform, we aim to bridge skill gaps and empower individuals
+		<br> like you to achieve your academic and
+		professional aspirations.
+	</p><br><br>
+	<p>Thank you for choosing EduBot as your learning partner.</p>
+
+	<p><span id="countdown">10</span>s to start your journey with us.
+	</p>
+
+	<script>
+		// Countdown function
+		function countdown() {
+			var seconds = 10;
+			var countdownElement = document.getElementById("countdown");
+			var countdownInterval = setInterval(function () {
+				seconds--;
+				countdownElement.textContent = seconds;
+				if (seconds <= 0) {
+					clearInterval(countdownInterval);
+					// Redirect after countdown
+					window.location.href = "http://localhost:5000/";
+				}
+			}, 1000);
+		}
+
+		// Start countdown when the page loads
+		window.onload = function () {
+			countdown();
+		};
+	</script>
+
 </body>
 
 </html>

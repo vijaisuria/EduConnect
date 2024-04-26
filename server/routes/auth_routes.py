@@ -1,4 +1,4 @@
-from flask import request, jsonify, Blueprint, redirect, url_for, flash, render_template
+from flask import request, jsonify, Blueprint, redirect, url_for, flash, render_template, session
 from flask_mail import Mail, Message
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 import sqlite3
@@ -99,7 +99,7 @@ def verify():
     try:
         conn.execute('UPDATE users SET verified = 1 WHERE email = ?', (email,))
         conn.commit()
-        return jsonify({'message': 'Account verified successfully.'}), 200
+        return render_template('success.html')
     except Exception as e:
         return jsonify({'message': f'Error verifying account: {str(e)}'}), 500
     
@@ -131,7 +131,8 @@ def login():
             if custom_hash(password) == hashed_password:
                 # Password is correct, issue JWT token
                 token = create_access_token(identity=id)
-                return redirect(f'http://localhost:3000?id={token}&user={id}')
+                session['token'] = token
+                return redirect('/')
             else:
                 flash('Invalid email or password', 'error')
                 return redirect(url_for('index'))  # Redirect to root URL
@@ -141,3 +142,8 @@ def login():
     except Exception as e:
         flash(f'Error during login: {str(e)}', 'error')
         return redirect(url_for('index'))  # Redirect to root URL
+    
+@auth_routes.route('/logout', methods=['GET'])
+def logout():
+    session.pop('token', None)
+    return redirect(url_for('index'))
