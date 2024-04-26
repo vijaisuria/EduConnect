@@ -89,7 +89,7 @@
             // Fetch data from the API
             if (cid) {
                 $.ajax({
-                    url: 'http://localhost:5000/course/get-users-by-course-id?cid=' + cid,
+                    url: 'http://localhost:5000/enrollment/get-users-by-course-id?cid=' + cid,
                     type: 'GET',
                     dataType: 'json',
                     success: function (response) {
@@ -132,7 +132,7 @@
                 console.log('Receiver email:', receiverEmail);
                 console.log('Course ID:', cid);
                 $.ajax({
-                    url: 'http://localhost:5000/course/sendmail?cid=' + cid,
+                    url: 'http://localhost:5000/enrollment/sendmail?cid=' + cid,
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({

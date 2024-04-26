@@ -32,85 +32,6 @@
     <!-- Template Stylesheet -->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 
-
-    <script>
-        // Function to get URL parameter value
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        };
-
-        fetch('/get_exams')
-            .then(response => response.json())
-            .then(data => {
-                const examName = getUrlParameter('exam');
-                const exams = data.exams;
-
-                console.log(examName)
-
-                // Find the exam object based on the provided exam name
-                const selectedExam = exams.find(exam => exam.name === examName);
-
-                if (selectedExam) {
-                    const courses = selectedExam.courses;
-                    const coursesData = data.courses;
-
-                    // Filter courses data based on the courses of the selected exam
-                    const selectedCoursesData = coursesData.filter(course => courses.includes(course.course_name));
-
-                    console.log(selectedExam, selectedCoursesData);
-
-                    const courseListContainer = document.getElementById('courseList');
-
-                    // Create HTML for each course module
-                    selectedCoursesData.forEach(course => {
-                        const courseCard = document.createElement('div');
-                        courseCard.classList.add('col-md-4');
-
-                        const cardContent = `
-                            
-                            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-              <div class="course-item bg-light">
-                <div class="position-relative overflow-hidden">
-                  <img class="img-fluid" src="${course.url}" alt="${course.course_name}">
-                  <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                    <a href="module?course=${course.course_name}" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                    <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
-                  </div>
-                </div>
-                <div class="text-center p-4 pb-0">
-                  <div class="mb-3">
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
-                    <small>(123)</small>
-                  </div>
-                  <h5 class="mb-4">${course.course_name}</h5>
-                </div>
-                <div class="d-flex border-top">
-                  <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>${course.course_ins}</small>
-                  <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>${course.course_dur}</small>
-                  <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>${course.stud_en}</small>
-                </div>
-              </div>
-            </div>
-                        `;
-
-                        courseListContainer.innerHTML += cardContent;
-                    });
-                    document.getElementById('examName').textContent = selectedExam.name;
-                } else {
-                    console.error('Exam not found.');
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching exams JSON: ', error);
-            });
-    </script>
 </head>
 
 <body>
@@ -327,25 +248,63 @@
         </div>
     </div>
     <!-- Footer End -->
-
     <script>
-        fetch('/get_exams')
-            .then(response => response.json())
-            .then(data => {
-                // Handle the JSON data
-                console.log('JSON URL:', data);
+        // Function to get URL parameter value
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
 
-                // Fetch the JSON data using the provided URL
-                return fetch(data);
-            })
+        // Assuming you have a div with the id "courseListContainer" in your HTML where you want to append the course cards
+        const courseListContainer = document.getElementById('courseList');
+
+        // Fetch course details from the API
+        fetch('http://localhost:5000/learn/course_details?pid=' + getUrlParameter('pid'))
             .then(response => response.json())
             .then(data => {
-                // Handle the JSON data
-                console.log('Data:', data);
+                // Create HTML for each course module
+                data.forEach(course => {
+                    const courseCard = document.createElement('div');
+                    courseCard.classList.add('col-md-4');
+
+                    const cardContent = `
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="course-item bg-light">
+                        <div class="position-relative overflow-hidden">
+                            <img class="img-fluid" src="${course.url}" alt="${course.name}">
+                            <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
+                                <a href="module?cid=${course.id}" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
+                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
+                            </div>
+                        </div>
+                        <div class="text-center p-4 pb-0">
+                            <div class="mb-3">
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small>(123)</small>
+                            </div>
+                            <h5 class="mb-4">${course.name}</h5>
+                        </div>
+                        <div class="d-flex border-top">
+                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>${course.instructor}</small>
+                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>${course.duration} hours</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                    courseListContainer.innerHTML += cardContent;
+                });
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching course details:', error);
             });
+
     </script>
 
     <!-- Back to Top -->

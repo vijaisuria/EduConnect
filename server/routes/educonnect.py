@@ -29,6 +29,10 @@ def module():
 def contact():
     return render_template('educonnect/contact.html')
 
+@educonnect_bp.route('/profile')
+def profile():
+    return render_template('educonnect/profile.html')
+
 # Handle 404 errors
 @educonnect_bp.errorhandler(404)
 def page_not_found(e):
