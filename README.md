@@ -52,7 +52,7 @@ AI Model Training:
 APIs Used:
 - Gemini API
 - LinkedIn API
-- Myrocart API
+- Mirocart API
 
 ## Novelties 🎯
 
@@ -65,7 +65,7 @@ APIs Used:
 
 - **Skill Gap Analysis and Recommendations**: Through AI, we conduct skill gap analyses for users and offer personalized suggestions on the skills needed to achieve their goals, enabling learners to tailor their learning paths accordingly.
   
-- **AI based Test Generation** : By generating tests for users to assess themselves, we empower learners to gauge their understanding and progress effectively.
+- **AI based Mock Test Generation** : By generating tests for users to assess themselves, we empower learners to gauge their understanding and progress effectively.
 
 
 
