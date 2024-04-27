@@ -1,5 +1,7 @@
 # 🚀 EduConnect - Way To Success 🚀
 
+<img src="MINDMATE.AI.jpg" alt="Architecture">
+
 ## Problem Statement 💡
 
 Designing the Future of Learning in India to leverage Industry 4.0 technologies to empower students for competitive and higher education entrance exams. 
