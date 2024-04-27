@@ -57,8 +57,9 @@ APIs Used:
 - Mirocart API
   
 <img src="ArchitecturePics/MINDMATE.AI.png" alt="Architecture">
-<img src="ArchitecturePics/MINDMATE.AI(1).png" alt="Architecture">
-<img src="ArchitecturePics/MINDMATE.AI(2).png" alt="Architecture">
+<img src="ArchitecturePics/MINDMATE.AI (1).png" alt="Architecture">
+<img src="ArchitecturePics/MINDMATE.AI (2).png" alt="Architecture">
+
 
 ## Novelties 🎯
 
