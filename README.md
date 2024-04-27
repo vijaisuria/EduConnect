@@ -30,7 +30,7 @@ How can technology bridge the gap between traditional education and the needs of
 
 ## Features 🌟
 
-<img src="architecture.JPG" alt="Architecture" width="800" height="500">
+<img src="architecture.JPG" alt="Architecture" >
 
 ## Tech Stack 🛠️
 
@@ -57,8 +57,9 @@ APIs Used:
 - Mirocart API
   
 <img src="ArchitecturePics/P2P.png" alt="Architecture">
-<img src="ArchtecturePics/Querygen.png" alt="Architecture">
-<img src="ArchitecturePics/Skillssync" alt="Architecture">
+<img src="ArchitecturePics/Querygen.png" alt="Architecture">
+<img src="ArchitecturePics/Skillsync.png" alt="Architecture">
+
 ## Novelties 🎯
 
 
