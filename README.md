@@ -56,7 +56,7 @@ APIs Used:
 - LinkedIn API
 - Mirocart API
   
-<img src="ArchitecturePics/P2P.jpg" alt="Architecture">
+<img src="ArchitecturePics/P2P.png" alt="Architecture">
 <img src="MINDMATE.AI.jpg" alt="Architecture">
 <img src="MINDMATE.AI.jpg" alt="Architecture">
 ## Novelties 🎯
