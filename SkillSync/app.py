@@ -2,6 +2,7 @@ from flask import Flask, request, render_template
 from linkedin_api import Linkedin
 import google.generativeai as genai
 import os
+import json
 
 app = Flask(__name__)
 
@@ -43,6 +44,20 @@ def index():
         linkedin_username = request.form.get('linkedinUsername')
         profile_data = None
 
+        # Saving skills to a JSON file
+        if manual_skills or linkedin_username:
+            if linkedin_username:
+                profile_data = get_linkedin_profile(linkedin_username)
+                if 'skills' in profile_data:
+                    skills_data = {"skills": profile_data['skills']}
+                else:
+                    skills_data = {"skills": []}
+            else:
+                skills_data = {"skills": manual_skills}
+
+            with open('skills.json', 'w') as json_file:
+                json.dump(skills_data, json_file)
+
         if linkedin_username:
             profile_data = get_linkedin_profile(linkedin_username)
         elif manual_skills:
@@ -54,8 +69,6 @@ def index():
             return render_template('index.html', profile_data=profile_data, gemini_response=gemini_response)
         else:
             return render_template('index.html', error="Please enter your career goal and skills.")
-        
-        return render_template('index.html', profile_data=profile_data, manual_skills=manual_skills)
 
     return render_template('index.html')
 
