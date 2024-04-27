@@ -57,11 +57,5 @@ def chat():
     uid = decoded_token.get('sub')
     return render_template('peers.html', token=uid)
 
-@app.route('/get_exams')
-def get_exams():
-   with open('static/data/exams.json', 'r') as file:
-        data = json.load(file)
-        return data
-
 if __name__ == '__main__':
     app.run(debug=True)

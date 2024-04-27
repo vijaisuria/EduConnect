@@ -26,3 +26,10 @@ content-type: application/json
     "meeting_code": "214235",
     "reciever_email": "vijaisuria04@gmail.com"
 }
+
+###
+
+POST http://localhost:5000/enrollment/check-status?cid=3 HTTP/1.1
+content-type: application/json
+
+{}

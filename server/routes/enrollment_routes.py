@@ -28,6 +28,32 @@ def enroll_course(user_id, course_id):
     finally:
         conn.close()
 
+@enrollment_routes.route('/check-status', methods=['POST'])
+def check_enrollment_status():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    
+    try:
+        if 'token' not in session:
+            return jsonify({'enrolled': False}), 401  # Unauthorized
+        # Implement your logic to decode the token and get user ID
+        token = session.get('token')
+        user_id = decode_token(token)['sub']
+        course_id = request.json.get('cid')
+        print(token, user_id, course_id)
+        
+        c.execute("SELECT COUNT(*) FROM Course_Enrolled WHERE uid = ? AND cid = ?", (user_id, course_id))
+        count = c.fetchone()[0]
+        if count > 0:
+            return jsonify({'enrolled': True}), 200
+        else:
+            return jsonify({'enrolled': False}), 200
+    except sqlite3.Error as e:
+        print("Error enrolling in course:", e)
+        return jsonify({'enrolled': False}), 500  # Failed to enroll
+    finally:
+        conn.close()
+
 # Dummy function to delete enrollment for a course
 def delete_enrollment(user_id, course_id):
     conn = sqlite3.connect('database.db')
@@ -49,7 +75,7 @@ def get_users_by_course_id(course_id):
     c = conn.cursor()
 
     try:
-        c.execute("SELECT u.id, CASE WHEN u.status = 0 THEN u.email ELSE 'Private Profile' END AS email FROM Users u JOIN Course_Enrolled ce ON u.id = ce.uid WHERE ce.cid = ?", (course_id,))
+        c.execute("SELECT u.id, u.email, u.status FROM Users u JOIN Course_Enrolled ce ON u.id = ce.uid WHERE ce.cid = ?", (course_id,))
         users = c.fetchall()
         return users
     except sqlite3.Error as e:
@@ -58,16 +84,19 @@ def get_users_by_course_id(course_id):
     finally:
         conn.close()
 
-@enrollment_routes.route('/enroll-course', methods=['GET'])
+@enrollment_routes.route('/enroll-course', methods=['POST'])
 def enroll_course_route():
     token = session.get('token')
     if not token:
         return jsonify({'message': 'Token is missing.'}), 400
+    
 
     # Implement your logic to decode the token and get user ID
     user_id = decode_token(token)['sub']
 
-    course_id = request.args.get('cid')
+    course_id = request.json.get('cid')
+
+    print(token, user_id, course_id)
     if not course_id:
         return jsonify({'error': 'Course ID is required'}), 400
 
@@ -103,7 +132,7 @@ def get_users_by_course_id_route():
 
     users = get_users_by_course_id(course_id)
    
-    users_list = [{'id': user[0], 'email': user[1]} for user in users]
+    users_list = [{'id': user[0], 'email': user[1], 'status': user[2]} for user in users]
     return jsonify({'users': users_list}), 200
 
 # Function to retrieve course details by course ID

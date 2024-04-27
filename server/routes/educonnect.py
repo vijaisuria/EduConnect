@@ -15,7 +15,7 @@ def about():
 
 @educonnect_bp.route('/courses')
 def courses():
-    return render_template('educonnect/courses.html')
+    return render_template('educonnect/pathway.html')
 
 @educonnect_bp.route('/course')
 def course():
