@@ -1,6 +1,6 @@
 # 🚀 EduConnect - Way To Success 🚀
 
-<img src="MINDMATE.AI.jpg" alt="Architecture">
+<img src="ArchitecturePics/MINDMATE.AI.jpg" alt="Architecture">
 
 ## Problem Statement 💡
 
@@ -30,7 +30,7 @@ How can technology bridge the gap between traditional education and the needs of
 
 ## Features 🌟
 
-<img src="architecture.JPG" alt="Architecture" >
+<img src="ArchitecturePics/architecture.JPG" alt="Architecture" >
 
 ## Tech Stack 🛠️
 
@@ -74,9 +74,152 @@ APIs Used:
   
 - **AI based Mock Test Generation** : By generating tests for users to assess themselves, we empower learners to gauge their understanding and progress effectively.
 
+## How to run (Unit testing)?
+
+### 1) QueryChat
+To get started with QueryChat, follow these steps:
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/your-username/QueryChat.git
+    ```
+
+2. Navigate to the project directory:
+
+    ```bash
+    cd QueryChat
+    ```
+
+3. Activating venv (optional) 
+
+    ```bash
+    conda create -n venv python=3.10
+    conda activate venv
+    ```
+
+4. Install dependencies:
+
+    ```python
+    pip install -r requirements.txt
+    ```
+
+5. Configure environment variables
+    ```
+    Rename `.env-sample` to `.env` file
+    Replace the API your Google API Key, 
+    ```
+    Kindly follow refer to this site for getting [your own key](https://ai.google.dev/tutorials/setup)
+    <br/>
+
+6. Run the chatbot:
+
+    ```bash
+    streamlit run QueryChat.py
+    ```
+    
+### 2) QuizAppGemini
+To get started with QuizAppGemini, follow these steps:
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/your-username/QuizAppGemini.git
+    ```
+
+2. Navigate to the project directory:
+
+    ```bash
+    cd QueryChat
+    ```
+
+4. Install dependencies:
+
+    ```bash
+    npm install
+    ```
+
+5. Configure environment variables
+    ```
+    Rename `.env-sample` to `.env` file
+    ```
+
+6. Run the app:
+
+    ```bash
+    npm run dev
+    ```
+
+### 3) P2P Connect
+To get started with P2P Connect, follow these steps:
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/your-username/P2P Connect.git
+    ```
+
+2. Navigate to the project directory:
+
+    ```bash
+    cd P2P Connect
+    ```
+
+4. Install dependencies:
+
+    ```bash
+    npm install
+    ```
+
+5. Configure environment variables
+    ```
+    Rename `.env-sample` to `.env` file
+    ```
+
+6. Run the app:
+
+    ```bash
+    npm start
+    ```
+
+## How to run (Integration testing)?
+
+### 4) EduConnect 
+To get started with Edu Connect, follow these steps:
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/your-username/EduConnect.git
+    ```
+
+2. Navigate to the project directory:
+
+    ```bash
+    cd server
+    ```
+
+4. Install dependencies:
+
+    ```python
+    pip install -r requirements.txt
+    ```
+
+5. Configure environment variables
+    ```
+    Rename `.env-sample` to `.env` file
+    ```
+
+6. Run the app:
+
+    ```bash
+    python app.py
+    ```
 
 
 ## Team Details 👥
 - Vijai Suria M, 3rd year, B.E. CSE, Madras Institute of Technology
 - Mugundh J B, 3rd year, B.E. CSE, Madras Institute of Technology
 - Siva Jegadeesh C B, 3rd year, B.E. CSE, Madras Institute of Technology
+
+
