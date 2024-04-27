@@ -1,6 +1,6 @@
 # 🚀 EduConnect - Way To Success 🚀
 
-<img src="MINDMATE.AI.jpg" alt="Architecture">
+<img src="ArchitecturePics/MINDMATE.AI.jpg" alt="Architecture">
 
 ## Problem Statement 💡
 
@@ -30,7 +30,7 @@ How can technology bridge the gap between traditional education and the needs of
 
 ## Features 🌟
 
-<img src="architecture.JPG" alt="Architecture" >
+<img src="ArchitecturePics/architecture.JPG" alt="Architecture" >
 
 ## Tech Stack 🛠️
 
