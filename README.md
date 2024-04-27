@@ -55,7 +55,10 @@ APIs Used:
 - Gemini API
 - LinkedIn API
 - Mirocart API
-
+  
+<img src="ArchitecturePics/P2P.jpg" alt="Architecture">
+<img src="MINDMATE.AI.jpg" alt="Architecture">
+<img src="MINDMATE.AI.jpg" alt="Architecture">
 ## Novelties 🎯
 
 
